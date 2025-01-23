@@ -141,7 +141,8 @@ public class cadastroVIEW extends javax.swing.JFrame {
     private void cadastroNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastroNomeActionPerformed
         
       // Lê o texto digitado no campo cadastroNome
-    String nomeProduto = cadastroNome.getText(); // Atribui o valor digitado à variável nomeProduto
+      
+     String nomeProduto = cadastroNome.getText(); // Atribui o valor digitado à variável nomeProduto
     }//GEN-LAST:event_cadastroNomeActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
