@@ -9,6 +9,8 @@ package Leiloes1;
  *
  * @author Adm
  */
+import javax.swing.*;
+
 public class cadastroVIEW extends javax.swing.JFrame {
 
     /**
@@ -138,28 +140,49 @@ public class cadastroVIEW extends javax.swing.JFrame {
 
     private void cadastroNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastroNomeActionPerformed
         
-        
+      // Lê o texto digitado no campo cadastroNome
+    String nomeProduto = cadastroNome.getText(); // Atribui o valor digitado à variável nomeProduto
     }//GEN-LAST:event_cadastroNomeActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        ProdutosDTO produto = new ProdutosDTO();
-        String nome = cadastroNome.getText();
-        String valor = cadastroValor.getText();
-        String status = "A Venda";
-        produto.setNome(nome);
-        produto.setValor(Integer.parseInt(valor));
-        produto.setStatus(status);
         
-        ProdutosDAO produtodao = new ProdutosDAO();
-        produtodao.cadastrarProduto(produto);
+        // Lê o texto digitado nos campos de nome e valor
+    String nomeProduto = cadastroNome.getText(); // Nome do produto
+    double valorProduto = 0.0;
+
+    // Tenta converter o valor do campo cadastroValor para double
+    try {
+        valorProduto = Double.parseDouble(cadastroValor.getText()); // Valor do produto
+    } catch (NumberFormatException e) {
+        // Exibe uma mensagem de erro caso o valor não seja um número válido
+        JOptionPane.showMessageDialog(this, "Valor inválido. Por favor, insira um número válido.");
+        return; // Retorna se o valor não for válido, para evitar cadastrar o produto
+    }
+
+    // Criar uma instância de produtosDAO e chama o método cadastrarProduto
+        ProdutosDAO dao = new ProdutosDAO();
+        dao.cadastrarProduto(nomeProduto, valorProduto); // Chama o método da classe produtosDAO
         
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed
         listagemVIEW listagem = new listagemVIEW(); 
         listagem.setVisible(true);
+        this.dispose();//Fecha a janela atual, se necessáio
     }//GEN-LAST:event_btnProdutosActionPerformed
 
+    private void cadastroValorActionPerformed(java.awt.event.ActionEvent evt) {                                              
+        // Lê o texto digitado no campo cadastroValor e converte para double
+    String valorText = cadastroValor.getText(); // Recupera o valor como String
+    double valorProduto = 0.0;
+
+    try {
+        valorProduto = Double.parseDouble(valorText); // Converte para double
+    } catch (NumberFormatException e) {
+        // Exibe uma mensagem de erro caso o valor não seja um número válido
+        JOptionPane.showMessageDialog(this, "Valor inválido. Por favor, insira um número válido.");
+    }
+    }  
     /**
      * @param args the command line arguments
      */
