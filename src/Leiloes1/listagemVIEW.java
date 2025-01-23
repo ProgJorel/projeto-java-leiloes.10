@@ -21,7 +21,7 @@ public class listagemVIEW extends javax.swing.JFrame {
      */
     public listagemVIEW() {
         initComponents();
-        listarProdutos();
+        atualizarTabelaProdutos(); //Atualiza a tabela com os produtos do banco
     }
 
     /**
