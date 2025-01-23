@@ -1,6 +1,7 @@
 package Leiloes1;
 
-
+import java.sql.*;
+import javax.swing.*;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
