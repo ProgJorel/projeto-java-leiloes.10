@@ -175,6 +175,7 @@ public class cadastroVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_btnProdutosActionPerformed
 
     private void cadastroValorActionPerformed(java.awt.event.ActionEvent evt) {                                              
+       
         // Lê o texto digitado no campo cadastroValor e converte para double
     String valorText = cadastroValor.getText(); // Recupera o valor como String
     double valorProduto = 0.0;
