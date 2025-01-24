@@ -10,7 +10,7 @@ package Leiloes1;
  * @author Adm
  */
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +76,30 @@ public class ProdutosDAO {
 }
     
     
-    
+    // Método para listar apenas os produtos vendidos
+    public List<Object[]> listarProdutosVendidos() {
+        List<Object[]> produtosVendidos = new ArrayList<>();
+        String sql = "SELECT id, nome, valor, status FROM produtos WHERE status = 'Vendido'";
+
+        try (Connection con = new conectaDAO().connectDB();
+             PreparedStatement pst = con.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+
+            while (rs.next()) {
+                produtosVendidos.add(new Object[]{
+                    rs.getInt("id"),
+                    rs.getString("nome"),
+                    rs.getDouble("valor"),
+                    rs.getString("status")
+                });
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao listar produtos vendidos: " + e.getMessage());
+        }
+
+        return produtosVendidos;
+    }
    
     
     

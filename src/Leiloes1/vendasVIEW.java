@@ -1,8 +1,8 @@
 package Leiloes1;
 
-import java.sql.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.List;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -105,7 +105,8 @@ public class vendasVIEW extends javax.swing.JFrame {
         listagem.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
-
+    
+    
     
     /**
      * @param args the command line arguments
@@ -151,50 +152,16 @@ public class vendasVIEW extends javax.swing.JFrame {
     private javax.swing.JTable listaProdutos;
     // End of variables declaration//GEN-END:variables
 
-    private void listarProdutos(){
-        
-        
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        
-        try {
-            
-            //Estabelecendo a conexão com o banco de dados
-            conn = new conectaDAO().connectDB(); // Usando a conexão do seu código
-            
-            //Consulta SQL para obter todos os produtos 
-            String sql = "SELECT id, nome, valor, status FROM produtos WHERE status = 'Vendido'";
-            stmt = conn.prepareStatement(sql);
-            rs = stmt.executeQuery(); //Executa a consulta SQL
-            
-            //Criação do modelo de tabela para lista de produtos
-            DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
-            model.setNumRows(0); // Limpa a tabela antes de adicionar novos dados
-            
-            //Preenchendo a tabela com os dados dos produtos
-            while(rs.next()){
-                //Adcionando cada linha (produto) na tabela
-                model.addRow(new Object[]{
-                    rs.getInt("id"),
-                    rs.getString("nome"),
-                    rs.getInt("valor"),
-                    rs.getString("status")
-                });
-            }
-            
-        }catch (SQLException e){
-            JOptionPane.showMessageDialog(null, "Erro ao listar produtos: " + e.getMessage());
-        }finally{
-            //Fechando as conexões com o banco de dados
-            try{
-                if(rs !=null) rs.close();
-                if(stmt !=null) stmt.close();
-                if(conn != null) conn.close();
-            }catch (SQLException e){
-                JOptionPane.showMessageDialog(null, "Erro ao fechar a conexão: " + e.getMessage());
-            }
+   private void listarProdutos() {
+        ProdutosDAO dao = new ProdutosDAO();
+        List<Object[]> produtosVendidos = dao.listarProdutosVendidos();
+
+        DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
+        model.setRowCount(0); // Limpa a tabela
+
+        for (Object[] produto : produtosVendidos) {
+            model.addRow(produto);
         }
-        
-    }
+    
+   }
 }
