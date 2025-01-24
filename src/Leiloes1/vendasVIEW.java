@@ -2,7 +2,6 @@ package Leiloes1;
 
 import java.sql.*;
 import javax.swing.*;
-import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -21,7 +20,7 @@ public class vendasVIEW extends javax.swing.JFrame {
      */
     public vendasVIEW() {
         initComponents();
-        atualizarTabelaProdutos(); //Atualiza a tabela com os produtos do banco
+        listarProdutos();
     }
 
     /**
@@ -107,32 +106,7 @@ public class vendasVIEW extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
 
-    private void atualizarTabelaProdutos() {
-    try {
-        // Cria uma instância de ProdutosDAO para interagir com o banco de dados
-        ProdutosDAO produtosDAO = new ProdutosDAO();
-
-        // Obtém o modelo da tabela para manipulação das linhas
-        DefaultTableModel modelo = (DefaultTableModel) listaProdutos.getModel();
-
-        // Limpa todas as linhas existentes na tabela para evitar duplicação de dados
-        modelo.setRowCount(0);
-
-        // Obtém a lista de produtos atualizada do banco de dados
-        for (ProdutosDTO produto : produtosDAO.listarProdutos()) {
-            // Adiciona cada produto como uma nova linha na tabela
-            modelo.addRow(new Object[]{
-                produto.getId(),    // ID do produto
-                produto.getNome(),  // Nome do produto
-                produto.getValor(), // Valor do produto
-                produto.getStatus() // Status do produto (ex: "Disponível" ou "Vendido")
-            });
-        }
-    } catch (Exception e) {
-        // Exibe uma mensagem de erro caso ocorra algum problema ao atualizar a tabela
-        JOptionPane.showMessageDialog(this, "Erro ao atualizar tabela: " + e.getMessage());
-    }
-}
+    
     /**
      * @param args the command line arguments
      */
@@ -178,24 +152,49 @@ public class vendasVIEW extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void listarProdutos(){
+        
+        
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
         try {
-            ProdutosDAO produtosdao = new ProdutosDAO();
             
+            //Estabelecendo a conexão com o banco de dados
+            conn = new conectaDAO().connectDB(); // Usando a conexão do seu código
+            
+            //Consulta SQL para obter todos os produtos 
+            String sql = "SELECT id, nome, valor, status FROM produtos WHERE status = 'Vendido'";
+            stmt = conn.prepareStatement(sql);
+            rs = stmt.executeQuery(); //Executa a consulta SQL
+            
+            //Criação do modelo de tabela para lista de produtos
             DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
-            model.setNumRows(0);
+            model.setNumRows(0); // Limpa a tabela antes de adicionar novos dados
             
-            ArrayList<ProdutosDTO> listagem = (ArrayList<ProdutosDTO>) produtosdao.listarProdutos();
-            
-            for(int i = 0; i < listagem.size(); i++){
+            //Preenchendo a tabela com os dados dos produtos
+            while(rs.next()){
+                //Adcionando cada linha (produto) na tabela
                 model.addRow(new Object[]{
-                    listagem.get(i).getId(),
-                    listagem.get(i).getNome(),
-                    listagem.get(i).getValor(),
-                    listagem.get(i).getStatus()
+                    rs.getInt("id"),
+                    rs.getString("nome"),
+                    rs.getInt("valor"),
+                    rs.getString("status")
                 });
             }
-        } catch (Exception e) {
+            
+        }catch (SQLException e){
+            JOptionPane.showMessageDialog(null, "Erro ao listar produtos: " + e.getMessage());
+        }finally{
+            //Fechando as conexões com o banco de dados
+            try{
+                if(rs !=null) rs.close();
+                if(stmt !=null) stmt.close();
+                if(conn != null) conn.close();
+            }catch (SQLException e){
+                JOptionPane.showMessageDialog(null, "Erro ao fechar a conexão: " + e.getMessage());
+            }
         }
-    
+        
     }
 }
