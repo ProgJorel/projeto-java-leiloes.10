@@ -78,7 +78,8 @@ public class ProdutosDAO {
     
     
     // Método para listar apenas os produtos vendidos
-    public List<Object[]> listarProdutosVendidos() {
+    
+   public List<Object[]> listarProdutosVendidos() {
         List<Object[]> produtosVendidos = new ArrayList<>();
         String sql = "SELECT id, nome, valor, status FROM produtos WHERE status = 'Vendido'";
 

@@ -70,7 +70,7 @@ public class vendasVIEW extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
+                        .addGap(65, 65, 65)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -164,4 +164,22 @@ public class vendasVIEW extends javax.swing.JFrame {
         }
     
    }
+   
+   private void listarProdutosVendidos() {
+    // Cria uma instância do DAO para chamar o método de listar produtos vendidos
+    ProdutosDAO dao = new ProdutosDAO();
+    
+    // Chama o método que retorna os produtos vendidos
+    List<Object[]> produtosVendidos = dao.listarProdutosVendidos();
+
+    // Obtém o modelo da tabela para preencher com os dados
+    DefaultTableModel model = (DefaultTableModel) listaProdutos2.getModel();
+    model.setRowCount(0); // Limpa a tabela antes de adicionar os novos dados
+
+    // Preenche a tabela com os produtos vendidos
+    for (Object[] produto : produtosVendidos) {
+        model.addRow(produto); // Adiciona uma linha para cada produto vendido
+    }
+}
+   
 }
