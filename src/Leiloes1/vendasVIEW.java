@@ -33,14 +33,14 @@ public class vendasVIEW extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        listaProdutos = new javax.swing.JTable();
+        listaProdutos2 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         btnVoltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        listaProdutos.setModel(new javax.swing.table.DefaultTableModel(
+        listaProdutos2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -51,7 +51,7 @@ public class vendasVIEW extends javax.swing.JFrame {
                 "ID", "Nome", "Valor", "Status"
             }
         ));
-        jScrollPane1.setViewportView(listaProdutos);
+        jScrollPane1.setViewportView(listaProdutos2);
 
         jLabel1.setFont(new java.awt.Font("Lucida Fax", 0, 18)); // NOI18N
         jLabel1.setText("Lista de Produtos Vendidos");
@@ -149,14 +149,14 @@ public class vendasVIEW extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable listaProdutos;
+    private javax.swing.JTable listaProdutos2;
     // End of variables declaration//GEN-END:variables
 
    private void listarProdutos() {
         ProdutosDAO dao = new ProdutosDAO();
         List<Object[]> produtosVendidos = dao.listarProdutosVendidos();
 
-        DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
+        DefaultTableModel model = (DefaultTableModel) listaProdutos2.getModel();
         model.setRowCount(0); // Limpa a tabela
 
         for (Object[] produto : produtosVendidos) {
