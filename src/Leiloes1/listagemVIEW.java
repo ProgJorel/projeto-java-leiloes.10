@@ -160,6 +160,7 @@ public class listagemVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void atualizarTabelaProdutos() {
+       
         // Obtém o modelo da tabela para manipulação
         DefaultTableModel modelo = (DefaultTableModel) listaProdutos.getModel();
 
