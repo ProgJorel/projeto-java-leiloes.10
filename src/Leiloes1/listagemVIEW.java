@@ -141,15 +141,29 @@ public class listagemVIEW extends javax.swing.JFrame {
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
         String id = id_produto_venda.getText();
         
-        ProdutosDAO produtosdao = new ProdutosDAO();
-        
-        //produtosdao.venderProduto(Integer.parseInt(id));
-        listarProdutos();
+         // Verifica se o campo não está vazio e se é um número válido
+    if (!id.isEmpty()) {
+        try {
+            int produtoId = Integer.parseInt(id); // Converte o ID para inteiro
+            
+            ProdutosDAO produtosdao = new ProdutosDAO();
+            produtosdao.venderProduto(produtoId); // Atualiza o status do produto para 'Vendido'
+            
+            // Atualiza a tabela para refletir a mudança
+            atualizarTabelaProdutos();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Por favor, insira um ID válido.");
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "Informe o ID do produto.");
+    }
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
-        //vendasVIEW vendas = new vendasVIEW(); 
-        //vendas.setVisible(true);
+        // Instancia e exibe a tela de vendas
+    vendasVIEW vendas = new vendasVIEW();
+    vendas.setVisible(true);
+    this.dispose(); // Fecha a tela atual
     }//GEN-LAST:event_btnVendasActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
@@ -160,31 +174,15 @@ public class listagemVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void atualizarTabelaProdutos() {
-    try {
-        // Cria uma instância de ProdutosDAO para interagir com o banco de dados
-        ProdutosDAO produtosDAO = new ProdutosDAO();
-
-        // Obtém o modelo da tabela para manipulação das linhas
+       
+        // Obtém o modelo da tabela para manipulação
         DefaultTableModel modelo = (DefaultTableModel) listaProdutos.getModel();
 
-        // Limpa todas as linhas existentes na tabela para evitar duplicação de dados
-        modelo.setRowCount(0);
-
-        // Obtém a lista de produtos atualizada do banco de dados
-        for (ProdutosDTO produto : produtosDAO.listarProdutos()) {
-            // Adiciona cada produto como uma nova linha na tabela
-            modelo.addRow(new Object[]{
-                produto.getId(),    // ID do produto
-                produto.getNome(),  // Nome do produto
-                produto.getValor(), // Valor do produto
-                produto.getStatus() // Status do produto (ex: "Disponível" ou "Vendido")
-            });
-        }
-    } catch (Exception e) {
-        // Exibe uma mensagem de erro caso ocorra algum problema ao atualizar a tabela
-        JOptionPane.showMessageDialog(this, "Erro ao atualizar tabela: " + e.getMessage());
+        // Cria uma instância de ProdutosDAO e chama o método para atualizar o modelo
+        ProdutosDAO produtosDAO = new ProdutosDAO();
+        produtosDAO.atualizarTabelaProdutos(modelo);
     }
-}
+
     /**
      * @param args the command line arguments
      */
@@ -213,9 +211,9 @@ public class listagemVIEW extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new listagemVIEW().setVisible(true);
+                new cadastroVIEW().setVisible(true);
             }
         });
     }
@@ -240,7 +238,7 @@ public class listagemVIEW extends javax.swing.JFrame {
             DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
             model.setNumRows(0);
             
-            ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutos();
+            ArrayList<ProdutosDTO> listagem = (ArrayList<ProdutosDTO>) produtosdao.listarProdutos();
             
             for(int i = 0; i < listagem.size(); i++){
                 model.addRow(new Object[]{
