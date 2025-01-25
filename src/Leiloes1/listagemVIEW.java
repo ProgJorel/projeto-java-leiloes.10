@@ -160,31 +160,14 @@ public class listagemVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void atualizarTabelaProdutos() {
-    try {
-        // Cria uma instância de ProdutosDAO para interagir com o banco de dados
-        ProdutosDAO produtosDAO = new ProdutosDAO();
-
-        // Obtém o modelo da tabela para manipulação das linhas
+        // Obtém o modelo da tabela para manipulação
         DefaultTableModel modelo = (DefaultTableModel) listaProdutos.getModel();
 
-        // Limpa todas as linhas existentes na tabela para evitar duplicação de dados
-        modelo.setRowCount(0);
-
-        // Obtém a lista de produtos atualizada do banco de dados
-        for (ProdutosDTO produto : produtosDAO.listarProdutos()) {
-            // Adiciona cada produto como uma nova linha na tabela
-            modelo.addRow(new Object[]{
-                produto.getId(),    // ID do produto
-                produto.getNome(),  // Nome do produto
-                produto.getValor(), // Valor do produto
-                produto.getStatus() // Status do produto (ex: "Disponível" ou "Vendido")
-            });
-        }
-    } catch (Exception e) {
-        // Exibe uma mensagem de erro caso ocorra algum problema ao atualizar a tabela
-        JOptionPane.showMessageDialog(this, "Erro ao atualizar tabela: " + e.getMessage());
+        // Cria uma instância de ProdutosDAO e chama o método para atualizar o modelo
+        ProdutosDAO produtosDAO = new ProdutosDAO();
+        produtosDAO.atualizarTabelaProdutos(modelo);
     }
-}
+
     /**
      * @param args the command line arguments
      */

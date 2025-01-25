@@ -14,6 +14,7 @@ import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 
 public class ProdutosDAO {
@@ -101,7 +102,29 @@ public class ProdutosDAO {
         return produtosVendidos;
     }
    
-    
+   // Método para atualizar o modelo da tabela com produtos
+    public void atualizarTabelaProdutos(DefaultTableModel modelo) {
+        try {
+            // Cria uma instância de ProdutosDAO para interagir com o banco de dados
+            List<ProdutosDTO> produtos = listarProdutos();
+
+            // Limpa todas as linhas existentes na tabela para evitar duplicação de dados
+            modelo.setRowCount(0);
+
+            // Adiciona cada produto como uma nova linha na tabela
+            for (ProdutosDTO produto : produtos) {
+                modelo.addRow(new Object[]{
+                    produto.getId(),    // ID do produto
+                    produto.getNome(),  // Nome do produto
+                    produto.getValor(), // Valor do produto
+                    produto.getStatus() // Status do produto (ex: "Disponível" ou "Vendido")
+                });
+            }
+        } catch (Exception e) {
+            // Exibe uma mensagem de erro caso ocorra algum problema ao atualizar a tabela
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar tabela: " + e.getMessage());
+        }
+    }  
     
     
         
